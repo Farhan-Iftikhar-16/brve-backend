@@ -31,14 +31,6 @@ const deedSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  deedDescription: {
-    type: String,
-    required: true
-  },
-  impact: {
-    type: String,
-    required: true
-  },
   podcast: {
     type: String,
     required: true
@@ -52,12 +44,12 @@ const deedSchema = mongoose.Schema({
     required: true
   },
   createdAt: {
-	type: Date,
-	required: true
+    type: Date,
+    required: true
   },
   updatedAt: {
-	type: Date,
-	required: true
+    type: Date,
+    required: true
   }
 });
 
@@ -94,8 +86,6 @@ module.exports.createDeed = (req , res) => {
       location: req.body.location,
       image: req.file,
       title: req.body.title,
-      deedDescription: req.body.deedDescription,
-      impact: req.body.impact,
       podcast: req.body.podcast,
       whatsHappening: req.body.whatsHappening,
       hashTags: req.body.hashTags,
@@ -111,7 +101,7 @@ module.exports.createDeed = (req , res) => {
       }
 
       if(!error) {
-        res.status(200).json({success: true, message: 'deed created successfully.', deed: response});
+        res.status(200).json({success: true, message: 'Deed created successfully.', deed: response});
       }
     });
   });
@@ -142,20 +132,11 @@ module.exports.getDeedByID = (req , res) => {
 }
 
 module.exports.getDeeds = async (req, res) => {
-  if (req.query.limit) {
-    const deeds = await Deed.find({}).limit(req.query.limit).catch(() => {
-      return res.status(500).json({status: 'Error', message: 'Error occurred while getting deeds.'});
-    });
-
-    return res.status(200).json({status: 'Success', deeds: deeds});
-  }
-
   const deeds = await Deed.find({}).catch(() => {
     return res.status(500).json({status: 'Error', message: 'Error occurred while getting deeds.'});
   });
 
   res.status(200).json({status: 'Success', deeds: deeds});
-
 }
 
 /*module.exports.getContractsByUserId = (req, res) => {

@@ -6,6 +6,7 @@ const config = require('./config/config')
 const app = express();
 const server = require('http').Server(app);
 const deedController = require('./controllers/deed-controller');
+const hastTagsController = require('./controllers/hash-tags-controller');
 
 mongoose.connect(config.mongoURL).then(async () => {
   console.log(`Connected to DB: ${config.mongoURL}`);
@@ -23,6 +24,7 @@ app.use(cors());
 app.options('*', cors());
 
 app.use('/deeds', deedController);
+app.use('/hash-tags', hastTagsController);
 
 server.listen(config.PORT, () => {
   console.log(`Server Running On Port: ${config.PORT}`)
