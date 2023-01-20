@@ -7,9 +7,22 @@ const app = express();
 const server = require('http').Server(app);
 const deedController = require('./controllers/deed-controller');
 const hastTagsController = require('./controllers/hash-tags-controller');
+const HASHTAGS = require('./models/hash-tags-model');
 
 mongoose.connect(config.mongoURL).then(async () => {
   console.log(`Connected to DB: ${config.mongoURL}`);
+
+  const hashtags = await HASHTAGS.find();
+  console.log(hashtags);
+  if (hashtags && hashtags.length === 0) {
+    const hashtags = config.HASH_TAGS;
+
+    for (const hashtag of hashtags) {
+      const tag = new HASHTAGS(hashtag);
+
+      await tag.save();
+    }
+  }
 });
 
 app.use(bodyParser.json());
